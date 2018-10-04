@@ -20,12 +20,6 @@ and configure my Emacs workflow around:
 
 My `init.el` is configured accordingly.
 
-## License
-
-This project is licensed under the MIT License - see the
-[LICENSE.md](LICENSE.md) file for details
-
-
 ## Acknowledgements
 
 Most of what you see has been copied and adapted from fellow Emacs users who
@@ -34,3 +28,7 @@ one of these individuals and you notice anything in my work that blatantly still
 resembles what you have done, then kindly get in touch and I will buy you a
 beer next time you're in London.
 
+## License
+
+This project is licensed under the MIT License - see the
+[LICENSE.md](LICENSE.md) file for details
