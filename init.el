@@ -135,7 +135,6 @@
   :bind (("C-x g" . magit-status))
   :init
   (setq magit-auto-revert-mode nil)
-  :config
   (setq magit-repository-directories
         '(;; Directory and depth to search
           ("~/git/"      . 1)
@@ -246,19 +245,6 @@
 
 
 ;; Python
-
-;; Standard Jedi.el setting
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
-
-;; Use Company for auto-completion interface.
-(defun my/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
-
-(use-package company-jedi
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'my/python-mode-hook))
 
 (use-package elpy
   :ensure t
@@ -374,16 +360,15 @@
 (use-package projectile
   :defer 1
   :diminish projectile-mode
-  :after magit
   :config
   (projectile-mode)
   (add-hook 'projectile-mode-hook 'projectile-rails-on)
   (setq projectile-sort-order (quote recently-active))
   (add-to-list 'projectile-globally-ignored-files ".DS_Store")
-  (mapc #'projectile-add-known-project
-        (mapcar #'file-name-as-directory (magit-list-repos)))
-  (projectile-save-known-projects)))
-  )
+  (when (require 'magit nil t)
+    (mapc #'projectile-add-known-project
+          (mapcar #'file-name-as-directory (magit-list-repos))))
+  (projectile-save-known-projects))
 
 ;; Adds projectile helpers functions for Rails projects
 (use-package projectile-rails
@@ -502,4 +487,5 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (when (not (file-exists-p custom-file))
   (with-temp-buffer (write-file custom-file)))
+
 (load custom-file)
