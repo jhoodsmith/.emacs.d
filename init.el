@@ -134,7 +134,13 @@
   :ensure t
   :bind (("C-x g" . magit-status))
   :init
-  (setq magit-auto-revert-mode nil))
+  (setq magit-auto-revert-mode nil)
+  :config
+  (setq magit-repository-directories
+        '(;; Directory and depth to search
+          ("~/git/"      . 1)
+          ;; Specific project root directory
+          ("~/.emacs.d/" . 0))))
 
 ;; Mode for .gitignore files.
 (use-package gitignore-mode
@@ -368,13 +374,15 @@
 (use-package projectile
   :defer 1
   :diminish projectile-mode
+  :after magit
   :config
-  (progn
-    (projectile-mode)
-    (add-hook 'projectile-mode-hook 'projectile-rails-on)
-    (setq projectile-sort-order (quote recently-active))
-    (add-to-list 'projectile-globally-ignored-files ".DS_Store")
-    )
+  (projectile-mode)
+  (add-hook 'projectile-mode-hook 'projectile-rails-on)
+  (setq projectile-sort-order (quote recently-active))
+  (add-to-list 'projectile-globally-ignored-files ".DS_Store")
+  (mapc #'projectile-add-known-project
+        (mapcar #'file-name-as-directory (magit-list-repos)))
+  (projectile-save-known-projects)))
   )
 
 ;; Adds projectile helpers functions for Rails projects
