@@ -31,4 +31,4 @@ beer next time you're in London.
 ## License
 
 This project is licensed under the MIT License - see the
-[LICENSE.md](LICENSE.md) file for details
+[LICENSE](LICENSE) file for details
