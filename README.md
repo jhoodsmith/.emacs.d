@@ -1,12 +1,13 @@
 # My Emacs File
 
-You find out a lot about person by the car they drive, the clothes they wear and their `init.el` file.
+You find out a lot about person by the car they drive, the clothes they wear and
+their `init.el` file.
 
 I work frequently with the following languages:
 
 - Python
 - Ruby
-- LxaTeX
+- LaTeX
 - Elixir
 
 and configure my Emacs workflow around:
@@ -18,6 +19,12 @@ and configure my Emacs workflow around:
 - Eshell
 
 My `init.el` is configured accordingly.
+
+## License
+
+This project is licensed under the MIT License - see the
+[LICENSE.md](LICENSE.md) file for details
+
 
 ## Acknowledgements
 
