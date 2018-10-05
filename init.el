@@ -261,6 +261,7 @@
     (define-key elpy-mode-map (kbd "C-c C-f") 'helm-projectile-find-file)
     (setq python-shell-interpreter "ipython"
 	  python-shell-interpreter-args "-i --simple-prompt"
+	  elpy-test-runner 'elpy-test-pytest-runner
 	  elpy-test-pytest-runner-command '("py.test" "-x" "-s")
 	  elpy-rpc-backend "jedi")))
 
@@ -402,16 +403,14 @@
         helm-buffers-fuzzy-matching t
 	helm-split-window-inside-p t)
   :config
-  (helm-mode 1)
-  (helm-autoresize-mode 1)
-  (add-to-list 'helm-completing-read-handlers-alist '(find-file . helm-completing-read-symbols)))
+  (helm-mode 1))
 
 (use-package helm-ag
   :ensure t)
 
-(use-package helm-tramp
-  :ensure t
-  :defer t)
+;; (use-package helm-tramp
+;;   :ensure t
+;;   :defer t)
 
 (use-package helm-projectile
   :ensure t
@@ -469,9 +468,14 @@
 
 ;; Org Mode
 (use-package org
-	     :ensure t
-	     :init
-	     (setq org-directory "~/org"))
+  :ensure t
+  :init
+  (setq org-directory "~/org")
+  :config
+  (setq org-babel-load-languages '((python . t)
+				   (ruby . t)
+				   (latex . t)
+				   (emacs-lisp . t))))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
