@@ -119,7 +119,6 @@
 ;; Shows a popup with all the possible key bindings that would complete the
 ;; started binding.
 (use-package guide-key
-  :ensure t
   :defer 4
   :diminish guide-key-mode
   :config
@@ -131,7 +130,6 @@
 
 ;; Magit
 (use-package magit
-  :ensure t
   :bind (("C-x g" . magit-status))
   :init
   (setq magit-auto-revert-mode nil)
@@ -142,8 +140,7 @@
           ("~/.emacs.d/" . 0))))
 
 ;; Mode for .gitignore files.
-(use-package gitignore-mode
-  :ensure t)
+(use-package gitignore-mode)
 
 ;; Themes
 (use-package material-theme)
@@ -151,7 +148,6 @@
 
 ; Web Mode
 (use-package web-mode
-  :ensure t
   :bind (("C-c C-v" . browse-url-of-buffer)
          ("C-c w t" . web-mode-element-wrap))
   :init
@@ -167,7 +163,6 @@
 
 ;; LaTeX
 (use-package auctex
-  :ensure t
   :mode ("\\.tex\\'" . latex-mode)
   :commands (latex-mode LaTeX-mode plain-tex-mode)
   :init
@@ -194,7 +189,6 @@
 
 ;; Javascript
 (use-package js2-mode
-  :ensure t
   :mode ("\\.js\\'" "\\.json\\'")
   :interpreter "node"
   :config
@@ -202,14 +196,12 @@
   (add-hook 'js2-mode-hook 'js2-imenu-extras-mode))
 
 (use-package tern
-  :ensure t
   :defer t
   :config
   (progn
     (add-hook 'js2-mode-hook 'tern-mode)))
 
 (use-package company-tern
-  :ensure t
   :defer t
   :init
   (progn
@@ -217,12 +209,13 @@
     (add-to-list 'company-backends 'company-tern)))
 
 ;; Coffeescript
-(use-package coffee-mode :ensure t :defer t
-	     :mode "\\.coffee\\'")
+(use-package coffee-mode
+  :defer t
+  :mode "\\.coffee\\'")
 
 ;; SASS
 (use-package scss-mode
-  :ensure t :defer t
+  :defer t
   :mode ("\\.scss\\'" . scss-mode)
   :init
   (setq scss-compile-at-save nil))
@@ -238,7 +231,6 @@
 
 ;; Markdown
 (use-package markdown-mode
-  :ensure t
   :mode (("\\`README\\.md\\'" . gfm-mode)
          ("\\.md\\'"          . markdown-mode)
          ("\\.markdown\\'"    . markdown-mode)))
@@ -247,7 +239,6 @@
 ;; Python
 
 (use-package elpy
-  :ensure t
   :defer 2
   :config
   (progn
@@ -266,12 +257,10 @@
 	  elpy-rpc-backend "jedi")))
 
 (use-package py-test
-    :ensure t
     :demand t)
 
 ;; flycheck
 (use-package flycheck
-  :ensure t
   :defer 2
   :diminish flycheck-mode " ✓"
   :commands global-flycheck-mode
@@ -303,7 +292,6 @@
 
 ;; Ruby
 (use-package ruby-mode
-  :ensure t
   :mode "\\.rb\\'"
   :mode "Rakefile\\'"
   :mode "Capfile$"
@@ -326,26 +314,22 @@
 (use-package rvm)
 
 (use-package yari
-  :ensure t
   :init
   (add-hook 'ruby-mode-hook
             (lambda ()
               (local-set-key [f1] 'yari))))
 
 (use-package inf-ruby
-  :ensure t
   :init
   (add-hook 'after-init-hook 'inf-ruby-switch-setup)
   (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode))
 
 (use-package rubocop
-  :ensure t
   :init
   (add-hook 'ruby-mode-hook 'rubocop-mode)
   :diminish rubocop-mode)
 
 (use-package robe
-  :ensure t
   :bind ("C-M-." . robe-jump)
 
   :init
@@ -377,12 +361,10 @@
 
 ;; Revelas the current file in Finder.app.
 (use-package reveal-in-osx-finder
-  :ensure t
   :if (eq system-type 'darwin))
 
 ;; Moves selected region around.
 (use-package drag-stuff
-  :ensure t
   :diminish drag-stuff-mode
   :bind (("M-<down>" . drag-stuff-down)
          ("M-<up>" . drag-stuff-up))
@@ -392,7 +374,6 @@
 ;; Helm
 
 (use-package helm
-  :ensure t
   :diminish helm-mode
   :bind (("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)
@@ -405,15 +386,13 @@
   :config
   (helm-mode 1))
 
-(use-package helm-ag
-  :ensure t)
+(use-package helm-ag)
 
 ;; (use-package helm-tramp
 ;;   :ensure t
 ;;   :defer t)
 
 (use-package helm-projectile
-  :ensure t
   :bind (("C-c p D" . projectile-dired)
          ("C-c p v" . projectile-vc)
          ("C-c p k" . projectile-kill-buffers)
@@ -436,7 +415,6 @@
 
 ;; Company
 (use-package company
-  :ensure t
   :diminish ""
   :config
   (global-company-mode 1)
@@ -468,7 +446,6 @@
 
 ;; Org Mode
 (use-package org
-  :ensure t
   :init
   (setq org-directory "~/org")
   :config
@@ -486,6 +463,9 @@
 (when (display-graphic-p)
   (toggle-frame-maximized))
 
+
+;; Ledger mode
+(use-package ledger-mode)
 
 ;; Keep emacs Custom-settings in separate file.
 (setq custom-file "~/.emacs.d/custom.el")
