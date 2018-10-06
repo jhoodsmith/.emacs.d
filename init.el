@@ -253,11 +253,10 @@
     (setq python-shell-interpreter "ipython"
 	  python-shell-interpreter-args "-i --simple-prompt"
 	  elpy-test-runner 'elpy-test-pytest-runner
-	  elpy-test-pytest-runner-command '("py.test" "-x" "-s")
+	  elpy-test-pytest-runner-command '("py.test" "-x" "-s" "--disable-warnings")
 	  elpy-rpc-backend "jedi")))
 
-(use-package py-test
-    :demand t)
+(use-package pytest)
 
 ;; flycheck
 (use-package flycheck
@@ -426,22 +425,6 @@
    company-minimum-prefix-length 1
    company-tooltip-align-annotations t
    company-tooltip-limit 20))
-
-
-(use-package w3m
-  :disabled t
-  :commands (w3m-search w3m-find-file)
-  :bind (("C-. u"   . w3m-browse-url)
-         ("C-. U"   . w3m-browse-url-new-session))
-  :init
-  (setq w3m-command "w3m")
-
-  (setq w3m-coding-system 'utf-8
-        w3m-file-coding-system 'utf-8
-        w3m-file-name-coding-system 'utf-8
-        w3m-input-coding-system 'utf-8
-        w3m-output-coding-system 'utf-8
-        w3m-terminal-coding-system 'utf-8))
 
 
 ;; Org Mode

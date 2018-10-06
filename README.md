@@ -25,7 +25,7 @@ My `init.el` is configured accordingly.
 Most of what you see has been copied and adapted from fellow Emacs users who
 have shared their dot files on GitHub. I am indebted to all of them. If you are
 one of these individuals and you notice anything in my work that blatantly still
-resembles what you have done, then kindly get in touch and I will buy you a
+resembles yours, then kindly get in touch and I will buy you a
 beer next time you're in London.
 
 ## License
