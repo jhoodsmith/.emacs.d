@@ -108,7 +108,6 @@
 
 ;; Key Bindings
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
-(global-set-key (kbd "C-x e") 'server-edit)
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-+") 'text-scale-increase)
@@ -427,15 +426,6 @@
    company-tooltip-limit 20))
 
 
-;; Org Mode
-(use-package org
-  :init
-  (setq org-directory "~/org")
-  :config
-  (setq org-babel-load-languages '((python . t)
-				   (ruby . t)
-				   (latex . t)
-				   (emacs-lisp . t))))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
