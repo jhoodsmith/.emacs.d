@@ -425,7 +425,20 @@
    company-tooltip-align-annotations t
    company-tooltip-limit 20))
 
-
+;; Org Mode
+(use-package org
+  :init
+  (setq org-directory "~/work/org")
+  :config
+  (setq org-capture-templates
+	'(("n" "Note" entry (file+headline "~/work/org/notes.org" "Notes")
+           "* %?\nEntered on %U\n %i\n")
+	  ("j" "Journal" entry (file+olp+datetree "~/work/org/journal.org")
+           "* %?\nEntered on %U\n  %i\n  %a")))
+  (setq org-babel-load-languages '((python . t)
+				   (ruby . t)
+				   (latex . t)
+				   (emacs-lisp . t))))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
