@@ -310,6 +310,7 @@
    (("C-c C-e"    . ruby-send-region))))
 
 (use-package rvm)
+(use-package yaml-mode)
 
 (use-package yari
   :init
@@ -429,10 +430,11 @@
 (use-package org
   :init
   (setq org-directory "~/work/org")
+  :bind ("C-c c" . org-capture)
   :config
   (setq org-capture-templates
 	'(("n" "Note" entry (file+headline "~/work/org/notes.org" "Notes")
-           "* %?\nEntered on %U\n %i\n")
+           "* %^{Title}\nEntered on %U\n%i\n%?")
 	  ("j" "Journal" entry (file+olp+datetree "~/work/org/journal.org")
            "* %?\nEntered on %U\n  %i\n  %a")))
   (setq org-babel-load-languages '((python . t)
