@@ -432,13 +432,15 @@
   (setq org-directory "~/work/org")
   :bind ("C-c c" . org-capture)
   :config
+  (setq org-agenda-files '("~/work/org"))
   (setq org-capture-templates
 	'(("n" "Note" entry (file+headline "~/work/org/notes.org" "Notes")
            "* %^{Title}\nEntered on %U\n%i\n%?")
-	  ("j" "Journal" entry (file+olp+datetree "~/work/org/journal.org")
-           "* %?\nEntered on %U\n  %i\n  %a")))
+	  ("t" "Organiser" entry (file+headline "~/work/org/tasks.org" "Tasks")
+           "* TODO %^{Task}\nEntered on %U\n%?\n%i")))
   (setq org-babel-load-languages '((python . t)
 				   (ruby . t)
+				   (sql . t)
 				   (latex . t)
 				   (emacs-lisp . t))))
 
