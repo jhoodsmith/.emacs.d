@@ -427,12 +427,20 @@
    company-tooltip-limit 20))
 
 ;; Org Mode
+(use-package ob-async)
+(use-package ob-ipython)
+
 (use-package org
   :init
   (setq org-directory "~/work/org")
   :bind ("C-c c" . org-capture)
   :config
   (setq org-agenda-files '("~/work/org"))
+  (setq org-src-fontify-natively t)
+  ; Don't prompt before running code in org
+  (setq org-confirm-babel-evaluate nil)
+  ;; Fix an incompatibility between the ob-async and ob-ipython packages
+  (setq ob-async-no-async-languages-alist '("ipython"))
   (setq org-capture-templates
 	'(("n" "Note" entry (file+headline "~/work/org/notes.org" "Notes")
            "* %^{Title}\nEntered on %U\n%i\n%?")
@@ -440,6 +448,8 @@
            "* TODO %^{Task}\nEntered on %U\n%?\n%i")))
   (setq org-babel-load-languages '((python . t)
 				   (ruby . t)
+				   (ipython . t)
+				   (sh .)
 				   (sql . t)
 				   (latex . t)
 				   (emacs-lisp . t))))
