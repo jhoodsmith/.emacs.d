@@ -54,7 +54,7 @@
 (prefer-coding-system 'utf-8)
 
 ;; Auto-close brackets and double quotes
-(electric-pair-mode 1)
+;; (electric-pair-mode 1)
 
 ;; Marking Text
 (delete-selection-mode t)
@@ -430,6 +430,18 @@
 (use-package ob-async)
 (use-package ob-ipython)
 
+(defun projectile-project-org-notes-file ()
+  "If working within a projectile project, set notes file to be within project root. Otherwise use user default"
+  (if (projectile-project-root)
+      (expand-file-name "NOTES.org" (projectile-project-root))
+    "~/work/org/NOTES.org"))
+
+(defun projectile-project-org-todo-file ()
+  "If working within a projectile project, set TODO file to be within project root. Otherwise use user default"
+  (if (projectile-project-root)
+      (expand-file-name "TODO.org" (projectile-project-root))
+    "~/work/org/TODO.org"))
+
 (use-package org
   :init
   (setq org-directory "~/work/org")
@@ -441,16 +453,14 @@
   (setq org-confirm-babel-evaluate nil)
   ;; Fix an incompatibility between the ob-async and ob-ipython packages
   (setq ob-async-no-async-languages-alist '("ipython"))
-  ;; To use the python lexer for ipython blocks
-  (add-to-list 'org-latex-minted-langs '(ipython "python"))
   (setq org-capture-templates
-	'(("n" "Note" entry (file+headline "~/work/org/notes.org" "Notes")
-           "* %^{Title}\nEntered on %U\n%i\n%?")
-	  ("t" "Organiser" entry (file+headline "~/work/org/tasks.org" "Tasks")
-           "* TODO %^{Task}\nEntered on %U\n%?\n%i")))
+	'(("n" "Note" entry (file+headline projectile-project-org-notes-file "Notes")
+           "\n* %^{Title}\nEntered on %U\n%i\n%?")
+	  ("t" "TODO" entry (file+headline projectile-project-org-todo-file "Tasks")
+           "\n* TODO %^{Task}\nEntered on %U\n%?\n%i")))
   (setq org-babel-load-languages '((python . t)
-				   (ruby . t)
 				   (ipython . t)
+				   (ruby . t)
 				   (sql . t)
 				   (latex . t)
 				   (emacs-lisp . t))))
