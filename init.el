@@ -447,6 +447,7 @@
   (setq org-directory "~/work/org")
   :bind ("C-c c" . org-capture)
   :config
+  (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
   (setq org-agenda-files '("~/work/org"))
   (setq org-src-fontify-natively t)
   ; Don't prompt before running code in org
