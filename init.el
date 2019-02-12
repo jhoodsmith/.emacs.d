@@ -236,6 +236,7 @@
 
 
 ;; Python
+(use-package pyenv-mode)
 
 (use-package elpy
   :defer 2
@@ -247,15 +248,21 @@
       (remove-hook 'elpy-modules 'elpy-module-yasnippet)
       (remove-hook 'elpy-mode-hook 'elpy-module-highlight-indentation)
       (add-hook 'elpy-mode-hook 'flycheck-mode))
+    (pyenv-mode)
     (elpy-enable)
     (define-key elpy-mode-map (kbd "C-c C-f") 'helm-projectile-find-file)
     (setq python-shell-interpreter "ipython"
 	  python-shell-interpreter-args "-i --simple-prompt"
 	  elpy-test-runner 'elpy-test-pytest-runner
-	  elpy-test-pytest-runner-command '("py.test" "-x" "-s" "--disable-warnings")
+	  elpy-test-pytest-runner-command '("py.test" "-x" "-v" "--disable-warnings")
 	  elpy-rpc-backend "jedi")))
 
-(use-package pytest)
+(use-package python-pytest
+  :config
+    (magit-define-popup-switch 'python-pytest-popup
+      ?w "disable warning" "--disable-warnings")
+    (magit-define-popup-switch 'python-pytest-popup
+      ?s "no capture" "--capture=no"))
 
 ;; flycheck
 (use-package flycheck
@@ -428,6 +435,7 @@
 
 ;; Org Mode
 (use-package ob-async)
+(use-package ob-http)
 (use-package ob-ipython)
 
 (defun projectile-project-org-notes-file ()
@@ -461,6 +469,7 @@
            "\n* TODO %^{Task}\nEntered on %U\n%?\n%i")))
   (setq org-babel-load-languages '((python . t)
 				   (ipython . t)
+				   (http . t)
 				   (ruby . t)
 				   (sql . t)
 				   (latex . t)
@@ -468,9 +477,8 @@
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-env "WORKON_HOME"))
+  :init
+  (exec-path-from-shell-initialize))
 
 (when (display-graphic-p)
   (toggle-frame-maximized))
