@@ -257,12 +257,14 @@
 	  elpy-test-pytest-runner-command '("py.test" "-x" "-v" "--disable-warnings")
 	  elpy-rpc-backend "jedi")))
 
-(use-package python-pytest
-  :config
-    (magit-define-popup-switch 'python-pytest-popup
-      ?w "disable warning" "--disable-warnings")
-    (magit-define-popup-switch 'python-pytest-popup
-      ?s "no capture" "--capture=no"))
+;; (use-package python-pytest
+;;   :config
+;;     (magit-define-popup-switch 'python-pytest-popup
+;;       ?w "disable warning" "--disable-warnings")
+;;     (magit-define-popup-switch 'python-pytest-popup
+;;       ?s "no capture" "--capture=no"))
+
+(use-package pytest)
 
 ;; flycheck
 (use-package flycheck
