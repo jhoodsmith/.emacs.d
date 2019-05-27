@@ -24,6 +24,8 @@
 (eval-when-compile
   (require 'use-package))
 
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
 ;; User Details
 (setq user-full-name "James Hood-Smith")
 (setq user-mail-address "james@hood-smith.co.uk")
@@ -251,8 +253,9 @@
     (pyenv-mode)
     (elpy-enable)
     (define-key elpy-mode-map (kbd "C-c C-f") 'helm-projectile-find-file)
-    (setq python-shell-interpreter "ipython"
-	  python-shell-interpreter-args "-i --simple-prompt"
+    (setq python-shell-interpreter "python"
+	  ;;python-shell-interpreter-args "-i --simple-prompt"
+          ;;python-shell-interpreter-args "--simple-prompt -c exec('__import__(\\'readline\\')') -i"
 	  elpy-test-runner 'elpy-test-pytest-runner
 	  elpy-test-pytest-runner-command '("py.test" "-x" "-v" "--disable-warnings")
 	  elpy-rpc-backend "jedi")))
@@ -296,6 +299,7 @@
 ;; Tramp
 (setq tramp-ssh-controlmaster-options
       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
+(setq tramp-default-method "ssh")
 
 ;; Ruby
 (use-package ruby-mode
@@ -436,9 +440,12 @@
    company-tooltip-limit 20))
 
 ;; Org Mode
-(use-package ob-async)
-(use-package ob-http)
-(use-package ob-ipython)
+
+(use-package ob-ipython
+  :config
+  (setq indent-tabs-mode nil
+        org-src-preserve-indentation nil
+  ))
 
 (defun projectile-project-org-notes-file ()
   "If working within a projectile project, set notes file to be within project root. Otherwise use user default"
@@ -452,6 +459,10 @@
       (expand-file-name "TODO.org" (projectile-project-root))
     "~/work/org/TODO.org"))
 
+(use-package plantuml-mode
+  :init
+  (setq org-plantuml-jar-path "/usr/local/Cellar/plantuml/1.2019.5/libexec/plantuml.jar"))
+
 (use-package org
   :init
   (setq org-directory "~/work/org")
@@ -463,19 +474,22 @@
   ; Don't prompt before running code in org
   (setq org-confirm-babel-evaluate nil)
   ;; Fix an incompatibility between the ob-async and ob-ipython packages
-  (setq ob-async-no-async-languages-alist '("ipython"))
   (setq org-capture-templates
 	'(("n" "Note" entry (file+headline projectile-project-org-notes-file "Notes")
            "\n* %^{Title}\nEntered on %U\n%i\n%?")
 	  ("t" "TODO" entry (file+headline projectile-project-org-todo-file "Tasks")
            "\n* TODO %^{Task}\nEntered on %U\n%?\n%i")))
-  (setq org-babel-load-languages '((python . t)
-				   (ipython . t)
-				   (http . t)
-				   (ruby . t)
-				   (sql . t)
-				   (latex . t)
-				   (emacs-lisp . t))))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (plantuml . t)
+     (ipython . t)
+     (restclient . t)
+     (ruby . t)
+     (shell . t)
+     (sql . t)
+     (latex . t)
+     (emacs-lisp . t))))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
@@ -485,9 +499,17 @@
 (when (display-graphic-p)
   (toggle-frame-maximized))
 
+;; export to Jupyter notebook
+(require 'ox-ipynb)
+
 
 ;; Ledger mode
 (use-package ledger-mode)
+
+;; Restclient
+(use-package restclient)
+(use-package restclient-helm)
+(use-package ob-restclient)
 
 ;; Keep emacs Custom-settings in separate file.
 (setq custom-file "~/.emacs.d/custom.el")
