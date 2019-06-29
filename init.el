@@ -24,13 +24,10 @@
 (eval-when-compile
   (require 'use-package))
 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-
 ;; User Details
 (setq user-full-name "James Hood-Smith")
 (setq user-mail-address "james@hood-smith.co.uk")
 (setq ispell-dictionary "british")
-
 
 ;; Start-Up Options
 (setq inhibit-splash-screen t)
@@ -43,6 +40,7 @@
 (setq ring-bell-function 'ignore)
 (setq visible-bell nil)
 (tooltip-mode -1)
+(setq default-directory "~/")
 
 ;; Show matching parens
 (setq show-paren-delay 0)
@@ -196,6 +194,8 @@
   (setq js2-basic-offset 2)
   (add-hook 'js2-mode-hook 'js2-imenu-extras-mode))
 
+(use-package nodejs-repl)
+
 (use-package tern
   :defer t
   :config
@@ -208,6 +208,29 @@
   (progn
     (require 'company)
     (add-to-list 'company-backends 'company-tern)))
+
+;; Elm
+(use-package elm-mode
+  :init
+  (add-hook 'elm-mode-hook #'elm-oracle-setup-completion)
+  (add-to-list 'company-backends 'company-elm)
+  ; (elm-indent-mode false)
+  (setq elm-indent-offset 2))
+
+
+;; ;; Emojis
+;; (use-package company-emoji
+;;   :defer t
+;;   :init
+;;   (progn
+;;     (require 'company)
+;;     (add-to-list 'company-backends 'company-emoji)))
+
+(if (version< "27.0" emacs-version)
+           (set-fontset-font
+            "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+         (set-fontset-font
+          t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
 
 ;; Coffeescript
 (use-package coffee-mode
@@ -266,6 +289,11 @@
 ;;       ?w "disable warning" "--disable-warnings")
 ;;     (magit-define-popup-switch 'python-pytest-popup
 ;;       ?s "no capture" "--capture=no"))
+
+(use-package pip-requirements
+  :mode ("/requirements.txt$" . pip-requirements-mode)
+  :config
+  (add-hook 'pip-requirements-mode-hook #'pip-requirements-auto-complete-setup))
 
 (use-package pytest)
 
@@ -402,7 +430,33 @@
 
 ;; (use-package helm-tramp
 ;;   :ensure t
-;;   :defer t)
+;;   :defer t
+;;   :bind (("C-c s" . helm-tramp))
+;;   :init
+;;   (setq tramp-default-method "ssh")
+;;   )
+
+(defun projectile-project-org-notes-file ()
+  "If working within a projectile project, set notes file to be within project root. Otherwise use user default"
+  (if (projectile-project-root)
+      (expand-file-name "NOTES.org" (expand-file-name (projectile-project-name) "~/work/org"))
+    "~/work/org/NOTES.org"))
+
+(defun projectile-project-org-todo-file ()
+  "If working within a projectile project, set TODO file to be within project root. Otherwise use user default"
+  (if (projectile-project-root)
+      (expand-file-name "TODO.org" (expand-file-name (projectile-project-name) "~/work/org"))
+    "~/work/org/TODO.org"))
+
+(defun make-directory-maybe (filename &rest args)
+  "Wrapper around find-file to make file's directory if not exist"
+  (unless (file-exists-p filename)
+    (let ((dir (file-name-directory filename)))
+      (unless (file-exists-p dir)
+        (make-directory dir)))))
+
+(advice-add 'find-file :before #'make-directory-maybe)
+  
 
 (use-package helm-projectile
   :bind (("C-c p D" . projectile-dired)
@@ -413,11 +467,12 @@
          ("C-c p f" . helm-projectile-find-file)
          ("C-c p F" . helm-projectile-find-file-in-known-projects)
          ("C-c p g" . helm-projectile-find-file-dwin)
-         ("C-c p d" . helm-projectile-find-dir)
          ("C-c p C-r" . helm-projectile-recentf)
          ("C-c p b" . helm-projectile-switch-to-buffer)
          ("C-c p s s" . helm-projectile-ag)
          ("C-c p s g" . helm-projectile-grep)
+         ("C-c n" . (lambda () (interactive) (find-file (projectile-project-org-notes-file))))
+         ("C-c t" . (lambda () (interactive) (find-file (projectile-project-org-todo-file))))
          )
   :diminish projectile-mode
   :init
@@ -447,21 +502,9 @@
         org-src-preserve-indentation nil
   ))
 
-(defun projectile-project-org-notes-file ()
-  "If working within a projectile project, set notes file to be within project root. Otherwise use user default"
-  (if (projectile-project-root)
-      (expand-file-name "NOTES.org" (projectile-project-root))
-    "~/work/org/NOTES.org"))
-
-(defun projectile-project-org-todo-file ()
-  "If working within a projectile project, set TODO file to be within project root. Otherwise use user default"
-  (if (projectile-project-root)
-      (expand-file-name "TODO.org" (projectile-project-root))
-    "~/work/org/TODO.org"))
-
 (use-package plantuml-mode
   :init
-  (setq org-plantuml-jar-path "/usr/local/Cellar/plantuml/1.2019.5/libexec/plantuml.jar"))
+  (setq org-plantuml-jar-path "/usr/local/Cellar/plantuml/1.2019.6/libexec/plantuml.jar"))
 
 (use-package org
   :init
@@ -496,12 +539,8 @@
   :init
   (exec-path-from-shell-initialize))
 
-(when (display-graphic-p)
-  (toggle-frame-maximized))
-
-;; export to Jupyter notebook
-(require 'ox-ipynb)
-
+;; (when (display-graphic-p)
+;;   (toggle-frame-maximized))
 
 ;; Ledger mode
 (use-package ledger-mode)
