@@ -280,7 +280,7 @@
 	  ;;python-shell-interpreter-args "-i --simple-prompt"
           ;;python-shell-interpreter-args "--simple-prompt -c exec('__import__(\\'readline\\')') -i"
 	  elpy-test-runner 'elpy-test-pytest-runner
-	  elpy-test-pytest-runner-command '("py.test" "-x" "-v" "--disable-warnings")
+	  elpy-test-pytest-runner-command '("py.test" "--disable-warnings")
 	  elpy-rpc-backend "jedi")))
 
 ;; (use-package python-pytest
@@ -565,3 +565,4 @@
 	    (when server-buffer-clients
 	      (local-set-key (kbd "C-x k") 'server-edit))))
 (server-start)
+(put 'upcase-region 'disabled nil)
