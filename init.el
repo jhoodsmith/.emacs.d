@@ -280,7 +280,7 @@
 	  ;;python-shell-interpreter-args "-i --simple-prompt"
           ;;python-shell-interpreter-args "--simple-prompt -c exec('__import__(\\'readline\\')') -i"
 	  elpy-test-runner 'elpy-test-pytest-runner
-	  elpy-test-pytest-runner-command '("py.test" "--disable-warnings")
+	  elpy-test-pytest-runner-command '("py.test" "--disable-warnings" "-x")
 	  elpy-rpc-backend "jedi")))
 
 ;; (use-package python-pytest
@@ -427,6 +427,10 @@
   (helm-mode 1))
 
 (use-package helm-ag)
+
+(use-package helm-dictionary
+  :init
+  (setq helm-dictionary-database "~/.emacs.d/en-es-enwiktionary.txt"))
 
 ;; (use-package helm-tramp
 ;;   :ensure t
