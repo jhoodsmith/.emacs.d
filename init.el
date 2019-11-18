@@ -568,5 +568,11 @@
               (use-local-map (copy-keymap (current-local-map))))
 	    (when server-buffer-clients
 	      (local-set-key (kbd "C-x k") 'server-edit))))
-(server-start)
-(put 'upcase-region 'disabled nil)
+
+(setq sql-postgres-program "/Applications/Postgres.app/Contents/Versions/latest/bin/psql")
+
+(setenv "PATH"
+        (concat
+         "/Applications/Postgres.app/Contents/Versions/latest/bin" ":"
+         "/usr/local/texlive/2019/bin/x86_64-darwin" ":"
+         (getenv "PATH")))
