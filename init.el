@@ -127,10 +127,14 @@
     (setq guide-key/idle-delay 0.4)
     (guide-key-mode 1)))
 
+;; gitmoji
+(load "~/.emacs.d/gitmoji-commit.el")
+
 ;; Magit
 (use-package magit
   :bind (("C-x g" . magit-status))
   :init
+  (gitmoji-commit-mode)
   (setq magit-auto-revert-mode nil)
   (setq magit-repository-directories
         '(;; Directory and depth to search
@@ -140,6 +144,7 @@
 
 ;; Mode for .gitignore files.
 (use-package gitignore-mode)
+
 
 ;; Themes
 (use-package material-theme)
@@ -226,11 +231,11 @@
 ;;     (require 'company)
 ;;     (add-to-list 'company-backends 'company-emoji)))
 
-(if (version< "27.0" emacs-version)
-           (set-fontset-font
-            "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
-         (set-fontset-font
-          t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
+;; (if (version< "27.0" emacs-version)
+;;            (set-fontset-font
+;;             "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+;;          (set-fontset-font
+;;           t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
 
 ;; Coffeescript
 (use-package coffee-mode
@@ -552,7 +557,7 @@
 ;; Restclient
 (use-package restclient)
 (use-package restclient-helm)
-(use-package ob-restclient)
+;; (use-package ob-restclient)
 
 ;; Keep emacs Custom-settings in separate file.
 (setq custom-file "~/.emacs.d/custom.el")
