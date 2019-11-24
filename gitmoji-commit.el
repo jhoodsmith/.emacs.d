@@ -101,11 +101,11 @@
   "Choose a gitmoji."
   (interactive)
   (insert (helm :sources (helm-build-sync-source "Choose a gitmoji"
-			   :candidates             (mapcar (lambda (x)
-							     (cons
-							      (concat (cdr x) " — " (car x))
-							      (cdr x)))
-							   gitmoji-commit--all-emojis)
+			   :candidates (mapcar (lambda (x)
+						 (cons
+						  (concat (cdr x) " — " (car x))
+						  (cdr x)))
+					       gitmoji-commit--all-emojis)
 			   :fuzzy-match t)
 		:buffer "*choose gitmoji*"))
   (insert " "))
