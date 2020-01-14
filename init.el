@@ -23,7 +23,6 @@
 
 (eval-when-compile
   (require 'use-package))
-
 ;; User Details
 (setq user-full-name "James Hood-Smith")
 (setq user-mail-address "james@hood-smith.co.uk")
@@ -546,6 +545,7 @@
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
   :init
+  (setq exec-path-from-shell-variables '("PATH" "MANPATH" "FACTSET_PASSWORD" "AWS_SECRET_ACCESS_KEY"))
   (exec-path-from-shell-initialize))
 
 ;; (when (display-graphic-p)
@@ -574,10 +574,9 @@
 	    (when server-buffer-clients
 	      (local-set-key (kbd "C-x k") 'server-edit))))
 
-(setq sql-postgres-program "/Applications/Postgres.app/Contents/Versions/latest/bin/psql")
+(setq sql-postgres-program "/usr/local/bin/psql")
 
 (setenv "PATH"
         (concat
-         "/Applications/Postgres.app/Contents/Versions/latest/bin" ":"
          "/usr/local/texlive/2019/bin/x86_64-darwin" ":"
          (getenv "PATH")))
