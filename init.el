@@ -280,9 +280,8 @@
     (pyenv-mode)
     (elpy-enable)
     (define-key elpy-mode-map (kbd "C-c C-f") 'helm-projectile-find-file)
-    (setq python-shell-interpreter "python"
-	  ;;python-shell-interpreter-args "-i --simple-prompt"
-          ;;python-shell-interpreter-args "--simple-prompt -c exec('__import__(\\'readline\\')') -i"
+    (setq python-shell-interpreter "ipython"
+	  python-shell-interpreter-args "--simple-prompt --pprint"
 	  elpy-test-runner 'elpy-test-pytest-runner
 	  elpy-test-pytest-runner-command '("py.test" "--disable-warnings" "-x")
 	  elpy-rpc-backend "jedi")))
