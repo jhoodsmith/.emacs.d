@@ -165,6 +165,9 @@
     (setq web-mode-code-indent-offset 4)))
 
 ;; LaTeX
+
+(use-package cdlatex)
+
 (use-package auctex
   :mode ("\\.tex\\'" . latex-mode)
   :commands (latex-mode LaTeX-mode plain-tex-mode)
@@ -172,6 +175,7 @@
   (progn
     (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup)
     (add-hook 'LaTeX-mode-hook #'flyspell-mode)
+    (add-hook 'LaTeX-mode-hook #'cdlatex-mode)
     (add-hook 'LaTeX-mode-hook #'turn-on-reftex)
     (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
     (setq TeX-auto-save t
@@ -519,6 +523,7 @@
   :bind ("C-c c" . org-capture)
   :config
   (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
+  (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
   (setq org-agenda-files '("~/work/org"))
   (setq org-src-fontify-natively t)
   ; Don't prompt before running code in org
