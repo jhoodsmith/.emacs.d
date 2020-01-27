@@ -283,6 +283,7 @@
       (add-hook 'elpy-mode-hook 'flycheck-mode))
     (pyenv-mode)
     (elpy-enable)
+    (define-key elpy-mode-map (kbd "C-c C-p") 'pytest-pdb-one)
     (define-key elpy-mode-map (kbd "C-c C-f") 'helm-projectile-find-file)
     (setq python-shell-interpreter "ipython"
 	  python-shell-interpreter-args "--simple-prompt --pprint"
