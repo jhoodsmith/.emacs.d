@@ -144,6 +144,16 @@
 ;; Mode for .gitignore files.
 (use-package gitignore-mode)
 
+;; Swift
+(use-package swift-mode)
+
+
+;; Clojure
+;; requires installation of clojure and leiningen
+;; brew install clojure/tools/clojure
+;; brew install leiningen
+(use-package cider)
+
 
 ;; Themes
 (use-package material-theme)
