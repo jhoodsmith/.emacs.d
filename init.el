@@ -518,15 +518,17 @@
 
 ;; Org Mode
 
-(use-package ob-ipython
-  :config
-  (setq indent-tabs-mode nil
-        org-src-preserve-indentation nil
-  ))
+;; (use-package ob-ipython
+;;   :config
+;;   (setq indent-tabs-mode nil
+;;         org-src-preserve-indentation nil
+;;   ))
 
 (use-package plantuml-mode
   :init
   (setq org-plantuml-jar-path "/usr/local/Cellar/plantuml/1.2019.6/libexec/plantuml.jar"))
+
+(use-package ein)
 
 (use-package org
   :init
@@ -549,13 +551,14 @@
    'org-babel-load-languages
    '((python . t)
      (plantuml . t)
-     (ipython . t)
+     ;; (ipython . t)
      (restclient . t)
      (ruby . t)
      (shell . t)
      (sql . t)
      (latex . t)
-     (emacs-lisp . t))))
+     (emacs-lisp . t)
+     (ein . t))))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
