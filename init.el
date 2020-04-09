@@ -347,6 +347,11 @@
       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 (setq tramp-default-method "ssh")
 
+;; Kubernetes
+(use-package kubernetes
+  :ensure t
+  :commands (kubernetes-overview))
+
 ;; Ruby
 (use-package ruby-mode
   :mode "\\.rb\\'"
