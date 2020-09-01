@@ -220,20 +220,20 @@
   (progn
     (add-hook 'js2-mode-hook 'tern-mode)))
 
-(use-package company-tern
-  :defer t
-  :init
-  (progn
-    (require 'company)
-    (add-to-list 'company-backends 'company-tern)))
+;; (use-package company-tern
+;;   :defer t
+;;   :init
+;;   (progn
+;;     (require 'company)
+;;     (add-to-list 'company-backends 'company-tern)))
 
-;; Elm
-(use-package elm-mode
-  :init
-  (add-hook 'elm-mode-hook #'elm-oracle-setup-completion)
-  (add-to-list 'company-backends 'company-elm)
-  ; (elm-indent-mode false)
-  (setq elm-indent-offset 2))
+;; ;; Elm
+;; (use-package elm-mode
+;;   :init
+;;   (add-hook 'elm-mode-hook #'elm-oracle-setup-completion)
+;;   (add-to-list 'company-backends 'company-elm)
+;;   ; (elm-indent-mode false)
+;;   (setq elm-indent-offset 2))
 
 
 ;; ;; Emojis
@@ -276,7 +276,6 @@
   :mode (("\\`README\\.md\\'" . gfm-mode)
          ("\\.md\\'"          . markdown-mode)
          ("\\.markdown\\'"    . markdown-mode)))
-
 
 ;; Python
 (use-package pyenv-mode)
@@ -557,6 +556,7 @@
    '((python . t)
      (plantuml . t)
      ;; (ipython . t)
+     (ein . t)
      (restclient . t)
      (ruby . t)
      (shell . t)
@@ -577,8 +577,14 @@
 ;; Ledger mode
 (use-package ledger-mode)
 
+(use-package json-mode
+  :ensure t)
+
 ;; Restclient
-(use-package restclient)
+(use-package restclient
+  :mode ("\\.http\\'" . restclient-mode)
+  :bind (:map restclient-mode-map
+	      ("C-c C-f" . json-mode-beautify)))
 (use-package restclient-helm)
 (use-package ob-restclient)
 
