@@ -105,6 +105,15 @@
         search-ring
         regexp-search-ring))
 
+;; Eval-and-Compile. Taken from crux
+(defun eval-and-replace ()
+  "Replace the preceding sexp with its value."
+  (interactive)
+  (let ((value (eval (elisp--preceding-sexp))))
+    (backward-kill-sexp)
+    (insert (format "%S" value))))
+
+
 ;; Key Bindings
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 (global-set-key (kbd "RET") 'newline-and-indent)
@@ -113,8 +122,13 @@
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-O") 'other-frame)
+(global-set-key (kbd "C-c e") 'eval-and-replace)
 
-;; Shows a popup with all the possible key bindings that would complete the
+
+
+;; Shows a popup with all the possible key bindi
+
+ngs that would complete the
 ;; started binding.
 (use-package guide-key
   :defer 4
@@ -557,7 +571,6 @@
      (plantuml . t)
      ;; (ipython . t)
      (ein . t)
-     (restclient . t)
      (ruby . t)
      (shell . t)
      (sql . t)
@@ -585,8 +598,6 @@
   :mode ("\\.http\\'" . restclient-mode)
   :bind (:map restclient-mode-map
 	      ("C-c C-f" . json-mode-beautify)))
-(use-package restclient-helm)
-(use-package ob-restclient)
 
 ;; Vterm
 (use-package vterm
