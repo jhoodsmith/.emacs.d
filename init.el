@@ -548,6 +548,8 @@ ngs that would complete the
 
 (use-package ein)
 
+(use-package org-trello)
+
 (use-package org
   :init
   (setq org-directory "~/work/org")
