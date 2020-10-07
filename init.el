@@ -126,9 +126,7 @@
 
 
 
-;; Shows a popup with all the possible key bindi
-
-ngs that would complete the
+;; Shows a popup with all the possible key bindings that would complete the
 ;; started binding.
 (use-package guide-key
   :defer 4
