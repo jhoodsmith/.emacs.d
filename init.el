@@ -217,20 +217,20 @@
                             (cons "$" "$")))))
 
 ;; Javascript
-(use-package js2-mode
-  :mode ("\\.js\\'" "\\.json\\'")
-  :interpreter "node"
-  :config
-  (setq js2-basic-offset 2)
-  (add-hook 'js2-mode-hook 'js2-imenu-extras-mode))
+;; (use-package js2-mode
+;;   :mode ("\\.js\\'" "\\.json\\'")
+;;   :interpreter "node"
+;;   :config
+;;   (setq js2-basic-offset 2)
+;;   (add-hook 'js2-mode-hook 'js2-imenu-extras-mode))
 
-(use-package nodejs-repl)
+;; (use-package nodejs-repl)
 
-(use-package tern
-  :defer t
-  :config
-  (progn
-    (add-hook 'js2-mode-hook 'tern-mode)))
+;; (use-package tern
+;;   :defer t
+;;   :config
+;;   (progn
+;;     (add-hook 'js2-mode-hook 'tern-mode)))
 
 ;; (use-package company-tern
 ;;   :defer t
@@ -648,3 +648,4 @@
         (concat
          "/usr/local/texlive/2019/bin/x86_64-darwin" ":"
          (getenv "PATH")))
+(put 'upcase-region 'disabled nil)
