@@ -250,8 +250,8 @@
 
 ;; ;; Emojis
 ;; (use-package company-emoji
-;;   :defer t
-;;   :init
+t;;   :defer t
+ram;;   :init
 ;;   (progn
 ;;     (require 'company)
 ;;     (add-to-list 'company-backends 'company-emoji)))
@@ -362,6 +362,13 @@
 (use-package kubernetes
   :ensure t
   :commands (kubernetes-overview))
+
+
+;; docker
+(use-package docker
+  :ensure t
+  :bind ("C-c d" . docker))
+
 
 ;; Ruby
 (use-package ruby-mode
@@ -548,6 +555,10 @@
 
 (use-package org-trello)
 
+(use-package ox-hugo
+  :ensure t            ;Auto-install the package from Melpa (optional)
+  :after ox)
+
 (use-package org
   :init
   (setq org-directory "~/work/org")
@@ -648,4 +659,3 @@
         (concat
          "/usr/local/texlive/2019/bin/x86_64-darwin" ":"
          (getenv "PATH")))
-(put 'upcase-region 'disabled nil)
