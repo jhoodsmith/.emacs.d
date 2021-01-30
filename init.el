@@ -139,13 +139,13 @@
     (guide-key-mode 1)))
 
 ;; gitmoji
-(load "~/.emacs.d/gitmoji-commit.el")
+;; (load "~/.emacs.d/gitmoji-commit.el")
 
 ;; Magit
 (use-package magit
   :bind (("C-x g" . magit-status))
   :init
-  (gitmoji-commit-mode)
+  ;; (gitmoji-commit-mode)
   (setq magit-auto-revert-mode nil)
   (setq magit-repository-directories
         '(;; Directory and depth to search
@@ -250,17 +250,19 @@
 
 ;; ;; Emojis
 ;; (use-package company-emoji
-t;;   :defer t
-ram;;   :init
+;;   :defer t
+;;   :init
 ;;   (progn
 ;;     (require 'company)
 ;;     (add-to-list 'company-backends 'company-emoji)))
 
-;; (if (version< "27.0" emacs-version)
-;;            (set-fontset-font
-;;             "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
-;;          (set-fontset-font
-;;           t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
+
+;; (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)
+
+(use-package unicode-fonts
+   :ensure t
+   :config
+    (unicode-fonts-setup))
 
 ;; Coffeescript
 (use-package coffee-mode
@@ -362,13 +364,6 @@ ram;;   :init
 (use-package kubernetes
   :ensure t
   :commands (kubernetes-overview))
-
-
-;; docker
-(use-package docker
-  :ensure t
-  :bind ("C-c d" . docker))
-
 
 ;; Ruby
 (use-package ruby-mode
@@ -555,10 +550,6 @@ ram;;   :init
 
 (use-package org-trello)
 
-(use-package ox-hugo
-  :ensure t            ;Auto-install the package from Melpa (optional)
-  :after ox)
-
 (use-package org
   :init
   (setq org-directory "~/work/org")
@@ -659,3 +650,4 @@ ram;;   :init
         (concat
          "/usr/local/texlive/2019/bin/x86_64-darwin" ":"
          (getenv "PATH")))
+(put 'upcase-region 'disabled nil)
