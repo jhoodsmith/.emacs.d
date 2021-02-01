@@ -550,6 +550,9 @@
 
 (use-package org-trello)
 
+;; hugo org-mode integration
+(use-package ox-hugo)
+
 (use-package org
   :init
   (setq org-directory "~/work/org")
