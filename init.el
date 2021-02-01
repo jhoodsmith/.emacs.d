@@ -553,6 +553,8 @@
 ;; hugo org-mode integration
 (use-package ox-hugo)
 
+(use-package ob-restclient)
+
 (use-package org
   :init
   (setq org-directory "~/work/org")
