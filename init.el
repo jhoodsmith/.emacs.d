@@ -78,6 +78,9 @@
 (setq make-backup-files nil)
 (setq create-lockfiles nil)
 
+;; Silver searcher
+(use-package ag)
+
 ;; No .saves files
 (setq auto-save-list-file-name nil)
 (setq auto-save-default nil)
