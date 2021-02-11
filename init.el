@@ -128,7 +128,6 @@
 (global-set-key (kbd "C-c e") 'eval-and-replace)
 
 
-
 ;; Shows a popup with all the possible key bindings that would complete the
 ;; started binding.
 (use-package guide-key
@@ -145,6 +144,7 @@
 ;; (load "~/.emacs.d/gitmoji-commit.el")
 
 ;; Magit
+
 (use-package magit
   :bind (("C-x g" . magit-status))
   :init
@@ -155,6 +155,8 @@
           ("~/git/"      . 1)
           ;; Specific project root directory
           ("~/.emacs.d/" . 0))))
+
+(use-package gist)
 
 ;; Mode for .gitignore files.
 (use-package gitignore-mode)
@@ -168,7 +170,6 @@
 ;; brew install clojure/tools/clojure
 ;; brew install leiningen
 (use-package cider)
-
 
 ;; Themes
 (use-package material-theme)
@@ -267,10 +268,10 @@
    :config
     (unicode-fonts-setup))
 
-;; Coffeescript
-(use-package coffee-mode
-  :defer t
-  :mode "\\.coffee\\'")
+;; ;; Coffeescript
+;; (use-package coffee-mode
+;;   :defer t
+;;   :mode "\\.coffee\\'")
 
 ;; SASS
 (use-package scss-mode
@@ -390,6 +391,11 @@
    (("C-c C-e"    . ruby-send-region))))
 
 (use-package rvm)
+(use-package rspec-mode
+  :init
+  (setq rspec-use-spring-when-possible nil
+	rspec-use-rvm t))
+
 (use-package yaml-mode)
 
 (use-package yari
@@ -499,7 +505,6 @@
         (make-directory dir)))))
 
 (advice-add 'find-file :before #'make-directory-maybe)
-  
 
 (use-package helm-projectile
   :bind (("C-c p D" . projectile-dired)
@@ -658,4 +663,3 @@
         (concat
          "/usr/local/texlive/2019/bin/x86_64-darwin" ":"
          (getenv "PATH")))
-(put 'upcase-region 'disabled nil)
