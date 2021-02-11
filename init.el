@@ -157,6 +157,8 @@
           ("~/.emacs.d/" . 0))))
 
 (use-package gist)
+(use-package forge
+  :after magit)
 
 ;; Mode for .gitignore files.
 (use-package gitignore-mode)
