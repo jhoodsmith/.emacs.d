@@ -597,6 +597,25 @@
      (emacs-lisp . t)
      (ein . t))))
 
+(defun my-insert-shell-prompt (_backend)
+  (org-babel-map-src-blocks nil         ; nil implies current buffer
+    (let (;; capture macro-defined variables
+         (lang lang)
+         (beg-body beg-body)
+         (end-body end-body)
+         ;; other variables
+         (shell-langs '("sh" "shell"))
+         (prefix "$ "))
+      (when (member lang shell-langs)
+        (goto-char beg-body)
+        (skip-chars-forward "\n\s-" end-body)
+        (while (< (point) end-body)
+          (insert prefix)
+          (end-of-line)
+          (skip-chars-forward "\n\s-" end-body))))))
+
+(add-hook 'org-export-before-parsing-hook #'my-insert-shell-prompt)
+
 (setq org-latex-listings 'minted
       org-latex-packages-alist '(("" "minted"))
       org-latex-pdf-process
