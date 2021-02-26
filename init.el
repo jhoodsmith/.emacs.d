@@ -126,6 +126,7 @@
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-O") 'other-frame)
 (global-set-key (kbd "C-c e") 'eval-and-replace)
+(global-set-key (kbd "C-x e") 'eshell)
 
 
 ;; Shows a popup with all the possible key bindings that would complete the
@@ -139,9 +140,6 @@
     (setq guide-key/popup-window-position :bottom)
     (setq guide-key/idle-delay 0.4)
     (guide-key-mode 1)))
-
-;; gitmoji
-;; (load "~/.emacs.d/gitmoji-commit.el")
 
 ;; Magit
 
@@ -587,7 +585,6 @@
    '((python . t)
      (plantuml . t)
      ;; (ipython . t)
-     (ein . t)
      (ruby . t)
      (shell . t)
      (restclient . t)
