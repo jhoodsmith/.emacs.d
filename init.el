@@ -354,9 +354,9 @@
   (progn
     (setq ispell-program-name "aspell")
     (setq flyspell-issue-welcome-flag nil)
-    (if (eq system-type 'darwin)
-	(setq-default ispell-program-name "/usr/local/bin/aspell")
-      (setq-default ispell-program-name "/usr/bin/aspell"))
+    (if (file-exists-p "/opt/homebrew/bin/aspell")
+	(setq-default ispell-program-name "/opt/homebrew/bin/aspell")
+      (setq-default ispell-program-name "/usr/local/bin/aspell"))
     (add-hook 'text-mode-hook 'flyspell-mode)))
 
 (use-package define-word)
