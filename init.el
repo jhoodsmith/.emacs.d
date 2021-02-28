@@ -126,7 +126,7 @@
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-O") 'other-frame)
 (global-set-key (kbd "C-c e") 'eval-and-replace)
-(global-set-key (kbd "C-x e") 'eshell)
+(global-set-key (kbd "C-c s") 'vterm)
 
 
 ;; Shows a popup with all the possible key bindings that would complete the

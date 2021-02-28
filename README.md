@@ -16,7 +16,7 @@ and configure my Emacs workflow around:
 - Helm
 - Projectile
 - Tramp
-- Eshell
+- Vterm
 
 My `init.el` is configured accordingly.
 
