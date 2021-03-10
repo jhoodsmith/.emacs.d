@@ -125,9 +125,8 @@
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-O") 'other-frame)
-(global-set-key (kbd "C-c e") 'eval-and-replace)
 (global-set-key (kbd "C-c s") 'vterm)
-
+(global-set-key (kbd "C-c C-j") 'helm-imenu)
 
 ;; Shows a popup with all the possible key bindings that would complete the
 ;; started binding.
