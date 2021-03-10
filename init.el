@@ -356,12 +356,15 @@
       (setq-default ispell-program-name "/usr/local/bin/aspell"))
     (add-hook 'text-mode-hook 'flyspell-mode)))
 
+(use-package helm-flyspell)
+
 (use-package define-word)
 
 ;; Tramp
 (setq tramp-ssh-controlmaster-options
       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 (setq tramp-default-method "ssh")
+(use-package helm-tramp)
 
 ;; Kubernetes
 (use-package kubernetes
