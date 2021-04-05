@@ -4,9 +4,7 @@
                '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives
              '("org" . "http://orgmode.org/elpa/") t)
-;; Don't need to check every time.
-;; (when (not package-archive-contents)
-;;   (package-refresh-contents))
+
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -23,6 +21,7 @@
 
 (eval-when-compile
   (require 'use-package))
+
 ;; User Details
 (setq user-full-name "James Hood-Smith")
 (setq user-mail-address "james@hood-smith.co.uk")
@@ -44,6 +43,9 @@
 ;; Show matching parens
 (setq show-paren-delay 0)
 (show-paren-mode 1)
+
+;; Show line number globally
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 ;; UTF-8
 (setq locale-coding-system 'utf-8) 
@@ -108,15 +110,6 @@
         search-ring
         regexp-search-ring))
 
-;; Eval-and-Compile. Taken from crux
-(defun eval-and-replace ()
-  "Replace the preceding sexp with its value."
-  (interactive)
-  (let ((value (eval (elisp--preceding-sexp))))
-    (backward-kill-sexp)
-    (insert (format "%S" value))))
-
-
 ;; Key Bindings
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 (global-set-key (kbd "RET") 'newline-and-indent)
@@ -128,17 +121,30 @@
 (global-set-key (kbd "C-c s") 'vterm)
 (global-set-key (kbd "C-c C-j") 'helm-imenu)
 
-;; Shows a popup with all the possible key bindings that would complete the
-;; started binding.
-(use-package guide-key
-  :defer 4
-  :diminish guide-key-mode
-  :config
-  (progn
-    (setq guide-key/guide-key-sequence t)
-    (setq guide-key/popup-window-position :bottom)
-    (setq guide-key/idle-delay 0.4)
-    (guide-key-mode 1)))
+;; which-key
+
+(use-package which-key
+  :diminish
+  :config (which-key-mode))
+
+;; lsp-mode
+
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         ((python-mode ruby-mode go-mode json-mode js-mode web-mode clojure-mode) . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+
+;; Go
+
+(use-package go-mode)
 
 ;; Magit
 
@@ -297,25 +303,25 @@
 ;; Python
 (use-package pyenv-mode)
 
-(use-package elpy
-  :defer 2
-  :config
-  (progn
-    ;; Use Flycheck instead of Flymake
-    (when (require 'flycheck nil t)
-      (remove-hook 'elpy-modules 'elpy-module-flymake)
-      (remove-hook 'elpy-modules 'elpy-module-yasnippet)
-      (remove-hook 'elpy-mode-hook 'elpy-module-highlight-indentation)
-      (add-hook 'elpy-mode-hook 'flycheck-mode))
-    (pyenv-mode)
-    (elpy-enable)
-    (define-key elpy-mode-map (kbd "C-c C-p") 'pytest-pdb-one)
-    (define-key elpy-mode-map (kbd "C-c C-f") 'helm-projectile-find-file)
-    (setq python-shell-interpreter "ipython"
-	  python-shell-interpreter-args "--simple-prompt --pprint"
-	  elpy-test-runner 'elpy-test-pytest-runner
-	  elpy-test-pytest-runner-command '("py.test" "--disable-warnings" "-x")
-	  elpy-rpc-backend "jedi")))
+;; (use-package elpy
+;;   :defer 2
+;;   :config
+;;   (progn
+;;     ;; Use Flycheck instead of Flymake
+;;     (when (require 'flycheck nil t)
+;;       (remove-hook 'elpy-modules 'elpy-module-flymake)
+;;       (remove-hook 'elpy-modules 'elpy-module-yasnippet)
+;;       (remove-hook 'elpy-mode-hook 'elpy-module-highlight-indentation)
+;;       (add-hook 'elpy-mode-hook 'flycheck-mode))
+;;     (pyenv-mode)
+;;     (elpy-enable)
+;;     (define-key elpy-mode-map (kbd "C-c C-p") 'pytest-pdb-one)
+;;     (define-key elpy-mode-map (kbd "C-c C-f") 'helm-projectile-find-file)
+;;     (setq python-shell-interpreter "ipython"
+;; 	  python-shell-interpreter-args "--simple-prompt --pprint"
+;; 	  elpy-test-runner 'elpy-test-pytest-runner
+;; 	  elpy-test-pytest-runner-command '("py.test" "--disable-warnings" "-x")
+;; 	  elpy-rpc-backend "jedi")))
 
 ;; (use-package python-pytest
 ;;   :config
@@ -324,6 +330,7 @@
 ;;     (magit-define-popup-switch 'python-pytest-popup
 ;;       ?s "no capture" "--capture=no"))
 
+
 (use-package pip-requirements
   :mode ("/requirements.txt$" . pip-requirements-mode)
   :config
@@ -331,34 +338,41 @@
 
 (use-package pytest)
 
+
+;; Yasnippet
+(use-package yasnippet
+  :diminish yas-minor-mode
+  :defer nil
+  :custom
+  (yas-indent-line nil)
+  :config
+  (yas-global-mode))
+
+(use-package yasnippet-snippets)
+
 ;; flycheck
 (use-package flycheck
-  :defer 2
-  :diminish flycheck-mode " ✓"
-  :commands global-flycheck-mode
-  :config
-  (progn
-    (global-flycheck-mode 1)
-    (setq-default flycheck-disabled-checkers
-                  '(html-tidy
-                    emacs-lisp-checkdoc))))
+  :diminish
+  :hook ((flycheck-mode . flymake-mode-off))
+  :config (global-flycheck-mode))
 
 ;; flyspell
 (use-package flyspell
-  :defer 2
-  :init
+  :diminish
+  :hook
+  (prog-mode . flyspell-prog-mode)
+  (text-mode . flyspell-mode)
+  :custom
+  (ispell-program-name "aspell")
+  (flyspell-issue-welcome-flag nil)
   :config
-  (progn
-    (setq ispell-program-name "aspell")
-    (setq flyspell-issue-welcome-flag nil)
-    (if (file-exists-p "/opt/homebrew/bin/aspell")
-	(setq-default ispell-program-name "/opt/homebrew/bin/aspell")
-      (setq-default ispell-program-name "/usr/local/bin/aspell"))
-    (add-hook 'text-mode-hook 'flyspell-mode)))
+  (if (file-exists-p "/opt/homebrew/bin/aspell")
+      (setq-default ispell-program-name "/opt/homebrew/bin/aspell")
+    (setq-default ispell-program-name "/usr/local/bin/aspell")))
+
 
 (use-package helm-flyspell)
-
-(use-package define-word)
+(define-key flyspell-mode-map (kbd "C-;") 'helm-flyspell-correct)
 
 ;; Tramp
 (setq tramp-ssh-controlmaster-options
@@ -379,18 +393,8 @@
   :mode "Gemfile\\'"
   :mode "Berksfile\\'"
   :mode "Vagrantfile\\'"
-  :interpreter "ruby"
-
   :init
-  (setq ruby-indent-level 2
-	ruby-insert-encoding-magic-comment nil
-        ruby-indent-tabs-mode nil)
-  (add-hook 'ruby-mode 'superword-mode)
-
-  :bind
-  (([(meta down)] . ruby-forward-sexp)
-   ([(meta up)]   . ruby-backward-sexp)
-   (("C-c C-e"    . ruby-send-region))))
+  (setq lsp-solargraph-use-bundler t))
 
 (use-package rvm)
 (use-package rspec-mode
@@ -400,11 +404,11 @@
 
 (use-package yaml-mode)
 
-(use-package yari
-  :init
-  (add-hook 'ruby-mode-hook
-            (lambda ()
-              (local-set-key [f1] 'yari))))
+;; (use-package yari
+;;   :init
+;;   (add-hook 'ruby-mode-hook
+;;             (lambda ()
+;;               (local-set-key [f1] 'yari))))
 
 (use-package inf-ruby
   :init
@@ -416,16 +420,16 @@
   (add-hook 'ruby-mode-hook 'rubocop-mode)
   :diminish rubocop-mode)
 
-(use-package robe
-  :bind ("C-M-." . robe-jump)
+;; (use-package robe
+;;   :bind ("C-M-." . robe-jump)
 
-  :init
-  (add-hook 'ruby-mode-hook 'robe-mode)
+;;   :init
+;;   (add-hook 'ruby-mode-hook 'robe-mode)
 
-  :config
-  (defadvice inf-ruby-console-auto
-    (before activate-rvm-for-robe activate)
-    (rvm-activate-corresponding-ruby)))
+;;   :config
+;;   (defadvice inf-ruby-console-auto
+;;     (before activate-rvm-for-robe activate)
+;;     (rvm-activate-corresponding-ruby)))
 
 
 ;; Projectile for project file navigation
@@ -445,10 +449,6 @@
 ;; Adds projectile helpers functions for Rails projects
 (use-package projectile-rails
   :defer 1)
-
-;; Revelas the current file in Finder.app.
-(use-package reveal-in-osx-finder
-  :if (eq system-type 'darwin))
 
 ;; Moves selected region around.
 (use-package drag-stuff
@@ -532,10 +532,8 @@
 
 ;; Company
 (use-package company
-  :diminish ""
-  :config
-  (global-company-mode 1)
-  (push 'company-robe company-backends)
+  :diminish company-mode
+  :init
   (setq
    company-show-numbers t
    company-echo-delay 0
@@ -543,6 +541,12 @@
    company-minimum-prefix-length 1
    company-tooltip-align-annotations t
    company-tooltip-limit 20))
+
+(use-package company-box
+  :after company
+  :diminish company-box-mode
+  :hook
+  (company-mode . company-box-mode))
 
 ;; Org Mode
 
@@ -556,7 +560,10 @@
   :init
   (setq org-plantuml-jar-path "/usr/local/Cellar/plantuml/1.2019.6/libexec/plantuml.jar"))
 
-(use-package ein)
+(use-package ein
+  :commands ein:run
+  :custom-face
+  (ein:cell-input-area ((t (:background "#21262E")))))
 
 (use-package org-trello)
 
@@ -645,21 +652,6 @@
 ;; Vterm
 (use-package vterm
   :ensure t)
-
-(use-package vterm-toggle)
-
-(global-set-key [f2] 'vterm-toggle)
-(global-set-key [C-f2] 'vterm-toggle-cd)
-
-;; you can cd to the directory where your previous buffer file exists
-;; after you have toggle to the vterm buffer with `vterm-toggle'.
-(define-key vterm-mode-map [(control return)]   #'vterm-toggle-insert-cd)
-
-;Switch to next vterm buffer
-(define-key vterm-mode-map (kbd "s-n")   'vterm-toggle-forward)
-;Switch to previous vterm buffer
-(define-key vterm-mode-map (kbd "s-p")   'vterm-toggle-backward)
-
 
 
 ;; Keep emacs Custom-settings in separate file.
