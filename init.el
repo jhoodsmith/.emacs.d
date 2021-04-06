@@ -530,10 +530,15 @@
         projectile-enable-caching t
         projectile-completion-system 'helm))
 
+
 ;; Company
 (use-package company
   :diminish company-mode
-  :init
+  :bind (:map company-active-map
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous))
+  :config
+  (global-company-mode t)
   (setq
    company-show-numbers t
    company-echo-delay 0
@@ -560,10 +565,17 @@
   :init
   (setq org-plantuml-jar-path "/usr/local/Cellar/plantuml/1.2019.6/libexec/plantuml.jar"))
 
+
+;; Start EIN using ONE of the following:
+;; Open an .ipynb file, press C-c C-o, or,
+;; M-x ein:run launches a jupyter process from emacs, or,
+;; M-x ein:login to a running jupyter server, or,
+;; M-x ein:login to any of
+;; https://hub.data8x.berkeley.edu
+;; https://hub.data8x.berkeley.edu/user/1dcdab3
+;; https://hub.data8x.berkeley.edu/user/1dcdab3/?token=c421c68
 (use-package ein
-  :commands ein:run
-  :custom-face
-  (ein:cell-input-area ((t (:background "#21262E")))))
+  :commands ein:run)
 
 (use-package org-trello)
 
@@ -583,7 +595,6 @@
   (setq org-src-fontify-natively t)
   ; Don't prompt before running code in org
   (setq org-confirm-babel-evaluate nil)
-  ;; Fix an incompatibility between the ob-async and ob-ipython packages
   (setq org-capture-templates
 	'(("n" "Note" entry (file+headline projectile-project-org-notes-file "Notes")
            "\n* %^{Title}\nEntered on %U\n%i\n%?")
