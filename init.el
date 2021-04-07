@@ -134,7 +134,7 @@
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         ((python-mode ruby-mode go-mode json-mode js-mode web-mode clojure-mode) . lsp)
+         ((python-mode ruby-mode go-mode json-mode js-mode web-mode clojure-mode scss-mode css-mode) . lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
@@ -225,60 +225,12 @@
             (lambda () (set (make-variable-buffer-local 'TeX-electric-math)
                             (cons "$" "$")))))
 
-;; Javascript
-;; (use-package js2-mode
-;;   :mode ("\\.js\\'" "\\.json\\'")
-;;   :interpreter "node"
-;;   :config
-;;   (setq js2-basic-offset 2)
-;;   (add-hook 'js2-mode-hook 'js2-imenu-extras-mode))
-
-;; (use-package nodejs-repl)
-
-;; (use-package tern
-;;   :defer t
-;;   :config
-;;   (progn
-;;     (add-hook 'js2-mode-hook 'tern-mode)))
-
-;; (use-package company-tern
-;;   :defer t
-;;   :init
-;;   (progn
-;;     (require 'company)
-;;     (add-to-list 'company-backends 'company-tern)))
-
-;; ;; Elm
-;; (use-package elm-mode
-;;   :init
-;;   (add-hook 'elm-mode-hook #'elm-oracle-setup-completion)
-;;   (add-to-list 'company-backends 'company-elm)
-;;   ; (elm-indent-mode false)
-;;   (setq elm-indent-offset 2))
-
-
-;; ;; Emojis
-;; (use-package company-emoji
-;;   :defer t
-;;   :init
-;;   (progn
-;;     (require 'company)
-;;     (add-to-list 'company-backends 'company-emoji)))
-
-
-;; (set-fontset-font t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend)
-
 (use-package unicode-fonts
    :ensure t
    :config
     (unicode-fonts-setup))
 
-;; ;; Coffeescript
-;; (use-package coffee-mode
-;;   :defer t
-;;   :mode "\\.coffee\\'")
-
-;; SASS
+;; SCSS
 (use-package scss-mode
   :defer t
   :mode ("\\.scss\\'" . scss-mode)
@@ -648,11 +600,9 @@
 ;; (when (display-graphic-p)
 ;;   (toggle-frame-maximized))
 
-;; Ledger mode
-(use-package ledger-mode)
+(use-package json-mode)
 
-(use-package json-mode
-  :ensure t)
+(use-package toml-mode)
 
 ;; Restclient
 (use-package restclient
