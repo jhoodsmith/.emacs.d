@@ -184,16 +184,12 @@
 (use-package web-mode
   :bind (("C-c C-v" . browse-url-of-buffer)
          ("C-c w t" . web-mode-element-wrap))
-  :init
-  (progn
-    (add-to-list 'auto-mode-alist '("\\.html?" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode)))
+  :mode "\\.html?"
+  :mode "\\.erb$"
   :config
-  (progn
-    ;; Set tab to 4 to play nice with old editors
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-css-indent-offset 4)
-    (setq web-mode-code-indent-offset 4)))
+  (setq web-mode-markup-indent-offset 2
+	web-mode-css-indent-offset 4
+	web-mode-code-indent-offset 4))
 
 ;; LaTeX
 
@@ -203,20 +199,19 @@
   :mode ("\\.tex\\'" . latex-mode)
   :commands (latex-mode LaTeX-mode plain-tex-mode)
   :init
-  (progn
-    (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup)
-    (add-hook 'LaTeX-mode-hook #'flyspell-mode)
-    (add-hook 'LaTeX-mode-hook #'cdlatex-mode)
-    (add-hook 'LaTeX-mode-hook #'turn-on-reftex)
-    (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
-    (setq TeX-auto-save t
-          TeX-parse-self t
-          TeX-save-query nil
-          TeX-PDF-mode t
-          LaTeX-electric-left-right-brace t
-          TeX-electric-sub-and-superscript t
-          TeX-insert-braces nil)
-    (setq-default TeX-master nil))
+  (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup)
+  (add-hook 'LaTeX-mode-hook #'flyspell-mode)
+  (add-hook 'LaTeX-mode-hook #'cdlatex-mode)
+  (add-hook 'LaTeX-mode-hook #'turn-on-reftex)
+  (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
+  (setq TeX-auto-save t
+        TeX-parse-self t
+        TeX-save-query nil
+        TeX-PDF-mode t
+        LaTeX-electric-left-right-brace t
+        TeX-electric-sub-and-superscript t
+        TeX-insert-braces nil)
+  (setq-default TeX-master nil)
   :config
   (add-hook 'plain-TeX-mode-hook
             (lambda () (set (make-variable-buffer-local 'TeX-electric-math)
@@ -604,6 +599,8 @@
 
 (use-package toml-mode)
 
+(use-package nginx-mode)
+
 ;; Restclient
 (use-package restclient
   :mode ("\\.http\\'" . restclient-mode)
@@ -634,5 +631,5 @@
 
 (setenv "PATH"
         (concat
-         "/usr/local/texlive/2019/bin/x86_64-darwin" ":"
+         "/Library/TeX/texbin" ":"
          (getenv "PATH")))
