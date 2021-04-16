@@ -285,13 +285,11 @@
 
 (use-package pytest)
 
-
 ;; Yasnippet
 (use-package yasnippet
   :diminish yas-minor-mode
-  :defer nil
-  :custom
-  (yas-indent-line nil)
+  :defer 3
+  :custom (yas-prompt-functions '(yas-completing-prompt))
   :config
   (yas-global-mode))
 
@@ -307,7 +305,6 @@
 (use-package flyspell
   :diminish
   :hook
-  (prog-mode . flyspell-prog-mode)
   (text-mode . flyspell-mode)
   :custom
   (ispell-program-name "aspell")
