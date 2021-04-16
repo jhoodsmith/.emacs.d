@@ -270,21 +270,15 @@
 ;; 	  elpy-test-pytest-runner-command '("py.test" "--disable-warnings" "-x")
 ;; 	  elpy-rpc-backend "jedi")))
 
-;; (use-package python-pytest
-;;   :config
-;;     (magit-define-popup-switch 'python-pytest-popup
-;;       ?w "disable warning" "--disable-warnings")
-;;     (magit-define-popup-switch 'python-pytest-popup
-;;       ?s "no capture" "--capture=no"))
-
+(define-key python-mode-map (kbd "C-c ,") 'python-pytest-dispatch)
 
 (use-package pip-requirements
   :mode ("/requirements.txt$" . pip-requirements-mode)
   :config
   (add-hook 'pip-requirements-mode-hook #'pip-requirements-auto-complete-setup))
 
-(use-package pytest)
-
+;; (use-package pytest)
+(use-package python-pytest)
 ;; Yasnippet
 (use-package yasnippet
   :diminish yas-minor-mode
