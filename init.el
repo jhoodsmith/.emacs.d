@@ -30,7 +30,7 @@
 ;; Start-Up Options
 (setq inhibit-splash-screen t)
 (setq initial-scratch-message nil)
-(scroll-bar-mode -1)
+(when (display-graphic-p) (scroll-bar-mode -1))
 (tool-bar-mode -1)
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq echo-keystrokes 0.1)
