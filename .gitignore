@@ -1,5 +1,9 @@
-*
+# Ignore everything in the root
+/*
+# Un-ignore all of the lisp directory
+!/lisp/
+
 !.gitignore
 !init.el
-!gitmoji-commit.el
 !README.md
+

@@ -22,6 +22,18 @@
 (eval-when-compile
   (require 'use-package))
 
+
+;; Add local lisp files
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
+;; Adjust garbage collection thresholds during startup, and thereafter
+
+(let ((normal-gc-cons-threshold (* 20 1024 1024))
+      (init-gc-cons-threshold (* 128 1024 1024)))
+  (setq gc-cons-threshold init-gc-cons-threshold)
+  (add-hook 'emacs-startup-hook
+            (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
+
 ;; User Details
 (setq user-full-name "James Hood-Smith")
 (setq user-mail-address "james@hood-smith.co.uk")
@@ -71,7 +83,7 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) .1))) ;; one line at a time
 
 ;; Scrol one line when hitting bottom of window
-(setq scroll-conservatively 10000)
+;; (setq scroll-conservatively 10000)
 
 ;; Sentences do not need double spaces to end.
 (set-default 'sentence-end-double-space nil)
@@ -250,26 +262,6 @@
 ;; Python
 (use-package pyenv-mode)
 
-;; (use-package elpy
-;;   :defer 2
-;;   :config
-;;   (progn
-;;     ;; Use Flycheck instead of Flymake
-;;     (when (require 'flycheck nil t)
-;;       (remove-hook 'elpy-modules 'elpy-module-flymake)
-;;       (remove-hook 'elpy-modules 'elpy-module-yasnippet)
-;;       (remove-hook 'elpy-mode-hook 'elpy-module-highlight-indentation)
-;;       (add-hook 'elpy-mode-hook 'flycheck-mode))
-;;     (pyenv-mode)
-;;     (elpy-enable)
-;;     (define-key elpy-mode-map (kbd "C-c C-p") 'pytest-pdb-one)
-;;     (define-key elpy-mode-map (kbd "C-c C-f") 'helm-projectile-find-file)
-;;     (setq python-shell-interpreter "ipython"
-;; 	  python-shell-interpreter-args "--simple-prompt --pprint"
-;; 	  elpy-test-runner 'elpy-test-pytest-runner
-;; 	  elpy-test-pytest-runner-command '("py.test" "--disable-warnings" "-x")
-;; 	  elpy-rpc-backend "jedi")))
-
 (define-key python-mode-map (kbd "C-c ,") 'python-pytest-dispatch)
 
 (use-package pip-requirements
@@ -317,8 +309,8 @@
 (define-key flyspell-mode-map (kbd "C-;") 'helm-flyspell-correct)
 
 ;; Tramp
-(setq tramp-ssh-controlmaster-options
-      "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
+;; (setq tramp-ssh-controlmaster-options
+;;       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 (setq tramp-default-method "ssh")
 (use-package helm-tramp)
 
@@ -346,12 +338,6 @@
 
 (use-package yaml-mode)
 
-;; (use-package yari
-;;   :init
-;;   (add-hook 'ruby-mode-hook
-;;             (lambda ()
-;;               (local-set-key [f1] 'yari))))
-
 (use-package inf-ruby
   :init
   (add-hook 'after-init-hook 'inf-ruby-switch-setup)
@@ -361,18 +347,6 @@
   :init
   (add-hook 'ruby-mode-hook 'rubocop-mode)
   :diminish rubocop-mode)
-
-;; (use-package robe
-;;   :bind ("C-M-." . robe-jump)
-
-;;   :init
-;;   (add-hook 'ruby-mode-hook 'robe-mode)
-
-;;   :config
-;;   (defadvice inf-ruby-console-auto
-;;     (before activate-rvm-for-robe activate)
-;;     (rvm-activate-corresponding-ruby)))
-
 
 ;; Projectile for project file navigation
 (use-package projectile
@@ -495,19 +469,6 @@
   :hook
   (company-mode . company-box-mode))
 
-;; Org Mode
-
-;; (use-package ob-ipython
-;;   :config
-;;   (setq indent-tabs-mode nil
-;;         org-src-preserve-indentation nil
-;;   ))
-
-(use-package plantuml-mode
-  :init
-  (setq org-plantuml-jar-path "/usr/local/Cellar/plantuml/1.2019.6/libexec/plantuml.jar"))
-
-
 ;; Start EIN using ONE of the following:
 ;; Open an .ipynb file, press C-c C-o, or,
 ;; M-x ein:run launches a jupyter process from emacs, or,
@@ -519,12 +480,17 @@
 (use-package ein
   :commands ein:run)
 
+;; Org Mode
+
+(use-package plantuml-mode
+  :init
+  (setq org-plantuml-jar-path "/usr/local/Cellar/plantuml/1.2019.6/libexec/plantuml.jar"))
+
 (use-package org-trello)
-
-;; hugo org-mode integration
 (use-package ox-hugo)
-
 (use-package ob-restclient)
+
+(require 'ox-ipynb nil t)
 
 (use-package org
   :init
@@ -546,7 +512,6 @@
    'org-babel-load-languages
    '((python . t)
      (plantuml . t)
-     ;; (ipython . t)
      (ruby . t)
      (shell . t)
      (restclient . t)
@@ -587,9 +552,6 @@
   (setq exec-path-from-shell-variables '("PATH" "MANPATH" "FACTSET_PASSWORD" "AWS_SECRET_ACCESS_KEY"))
   (exec-path-from-shell-initialize))
 
-;; (when (display-graphic-p)
-;;   (toggle-frame-maximized))
-
 (use-package json-mode)
 
 (use-package toml-mode)
@@ -615,12 +577,11 @@
 (load custom-file)
 
 ;; Server
-(add-hook 'server-switch-hook
+(add-hook 'after-init-hook
           (lambda ()
-            (when (current-local-map)
-              (use-local-map (copy-keymap (current-local-map))))
-	    (when server-buffer-clients
-	      (local-set-key (kbd "C-x k") 'server-edit))))
+            (require 'server)
+            (unless (server-running-p)
+              (server-start))))
 
 (setq sql-postgres-program "/usr/local/bin/psql")
 
