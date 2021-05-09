@@ -503,6 +503,7 @@
   (setq org-src-fontify-natively t)
   ; Don't prompt before running code in org
   (setq org-confirm-babel-evaluate nil)
+  (setq org-adapt-indentation nil)
   (setq org-capture-templates
 	'(("n" "Note" entry (file+headline projectile-project-org-notes-file "Notes")
            "\n* %^{Title}\nEntered on %U\n%i\n%?")
