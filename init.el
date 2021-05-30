@@ -314,6 +314,13 @@
 (setq tramp-default-method "ssh")
 (use-package helm-tramp)
 
+
+;; Docker
+(use-package docker)
+(use-package docker-compose-mode)
+(use-package dockerfile-mode)
+(use-package docker-tramp)
+
 ;; Kubernetes
 (use-package kubernetes
   :ensure t
@@ -326,9 +333,9 @@
   :mode "Capfile$"
   :mode "Gemfile\\'"
   :mode "Berksfile\\'"
-  :mode "Vagrantfile\\'"
-  :init
-  (setq lsp-solargraph-use-bundler t))
+  :mode "Vagrantfile\\'")
+  ;; :init
+  ;; (setq lsp-solargraph-use-bundler t))
 
 (use-package rvm)
 (use-package rspec-mode
