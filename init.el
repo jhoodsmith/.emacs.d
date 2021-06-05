@@ -327,13 +327,17 @@
   :commands (kubernetes-overview))
 
 ;; Ruby
+(require 'inf-ruby)
 (use-package ruby-mode
   :mode "\\.rb\\'"
   :mode "Rakefile\\'"
   :mode "Capfile$"
   :mode "Gemfile\\'"
   :mode "Berksfile\\'"
-  :mode "Vagrantfile\\'")
+  :mode "Vagrantfile\\'"
+  :custom (inf-ruby-default-implementation "pry")
+  :bind (:map inf-ruby-minor-mode-map
+	      ("C-c C-c" . ruby-send-buffer)))
   ;; :init
   ;; (setq lsp-solargraph-use-bundler t))
 
@@ -350,10 +354,18 @@
   (add-hook 'after-init-hook 'inf-ruby-switch-setup)
   (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode))
 
-(use-package rubocop
-  :init
-  (add-hook 'ruby-mode-hook 'rubocop-mode)
-  :diminish rubocop-mode)
+;; (use-package rubocop
+;;   :init
+;;   (add-hook 'ruby-mode-hook 'rubocop-mode)
+;;   (setq rubocopfmt-use-bundler-when-possible nil)
+;;   :diminish rubocop-mode)
+
+(use-package rubocopfmt
+  :hook
+  (ruby-mode . rubocopfmt-mode)
+  :custom
+  (rubocopfmt-use-bundler-when-possible nil)
+  (rubocopfmt-include-unsafe-cops t))
 
 ;; Projectile for project file navigation
 (use-package projectile
@@ -597,3 +609,7 @@
         (concat
          "/Library/TeX/texbin" ":"
          (getenv "PATH")))
+
+(setenv "VISUAL" "emacsclient")
+(setenv "EDITOR" (getenv "VISUAL"))
+
