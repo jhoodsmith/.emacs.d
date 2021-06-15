@@ -345,6 +345,8 @@
 (use-package rspec-mode
   :init
   (setq rspec-use-spring-when-possible nil
+	rspec-docker-container "rails"
+	rspec-use-docker-when-possible t
 	rspec-use-rvm t))
 
 (use-package yaml-mode)
